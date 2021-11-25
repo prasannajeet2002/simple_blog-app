@@ -38,19 +38,22 @@ router.post('/', async(req,res) => {
 }
 })
 router.put('/:id', async(req,res) => {
-await Article.findById(req.params.id)
-    let article = new Article({
-        title: req.body.title,
-        description: req.body.description,
-        markdown: req.body.markdown
-    })
+let article = await Article.findById(req.params.id);
+article.title = req.body.title;
+article.description = req.body.description;
+article.markdown = req.body.markdown;
+//     let article = new Article({
+//         title: req.body.title,
+//         description: req.body.description,
+//         markdown: req.body.markdown
+//     })
     try {
     article = await article.save()
-    // res.send("blog saved");
+    // console.log("blog edited");
     // console.log(article);
     res.status(201).redirect(`/articles/${article.id}`)
 } catch (e) { 
-    // console.log(e);
+    console.log(e);
    res.render('articles/edit', {article: article})
 //    res.status(400).send(error) 
 
